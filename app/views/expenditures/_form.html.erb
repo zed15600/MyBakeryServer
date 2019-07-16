@@ -1,0 +1,116 @@
+<% feedstocks = Feedstock.find_each.collect {|f| [f.name, f.id]}.sort %>
+<% expDetails = @expenditure.expenditures_feedstocks.collect{|ef| [ef.feedstock_id, ef.ammount, ef.price]} + ((defined? @exp2) ? @exp2 : []) %>
+<% feedsCount = @expenditure.feedstocks.count + ((defined? @exp2) ? @exp2.length : 0) %>
+<SCRIPT>var cloneCount = -1;var exp = <%= expDetails %></SCRIPT>
+<DIV class="form" id="expenditure_form">
+	<%= form_with model: @expenditure, local: true do |form| %>
+		<% if @expenditure.errors.any? %>
+			<DIV i="error_explanation">
+				<H2><%= pluralize(@expenditure.errors.count, "error") %> prohibited this expenditure from bewing saved:</H2>
+				<UL>
+					<% @expenditure.errors.full_messages.each do |msg| %>
+						<LI><%= msg %></LI>
+					<% end %>
+					<% @expenditure.expenditures_feedstocks.each do |feed| %>
+						<% feed.errors.full_messages.each do |msg| %>
+							<LI><%= msg %></LI>
+						<% end %>
+					<% end %>
+				</UL>
+			</DIV>
+		<% end %>
+		<P>
+			<%= form.label :date %><BR>
+			<%= form.date_field :date, :value => @expenditure.date!=nil ? @expenditure.date : Date.today %>
+		</P>
+		<P>
+			<TABLE>
+				<TR>
+					<TH>Product</TH>
+					<TH>Ammount</TH>
+					<TH>Price</TH>
+				</TR>
+				<% i=0 %>
+				<% loop do %>
+					<TR id="product<%= i %>">
+						<% detailNil = expDetails[i]==nil %>
+						<% ammount = detailNil ? 1 : expDetails[i][1] %>
+						<% feed_id = detailNil ? 1 : expDetails[i][0] %>
+						<TD><%= form.select "", options_for_select(feedstocks, selected: detailNil ? 1 : feed_id), {}, {:name => "expenditure[feedstocks][]", :id => "feedstocks"+i.to_s, :onchange => 'change('+i.to_s+');'} %></TD>
+						<TD><%= form.number_field "", :onkeyup => 'change('+i.to_s+');', :value => detailNil ? 1 : ammount, :name => "expenditure[ammounts][]", :id => "ammounts"+i.to_s %></TD>
+						<TD><%= form.number_field "", :onkeyup => 'updateTotal();', :value => detailNil ? Feedstock.first().price : expDetails[i][2], :name => "expenditure[prices][]", :id => "prices"+i.to_s %>
+					</TR>
+					<SCRIPT>cloneCount++</SCRIPT>
+					<% i+=1 %>
+					<% if i>=feedsCount %>
+						<% break %>
+					<% end %>
+				<% end %>
+				<TR>
+					<TD/>
+					<TH>Total</TH>
+					<TH>
+						<%= form.number_field :total, :disabled => true %>
+						<%= form.hidden_field :total_value %>
+					</TH>
+				</TR>
+			</TABLE>
+		</P>
+		<SPAN class="add">Add</SPAN> | 
+		<SPAN class="remove">Remove</SPAN>
+		<P>
+			<%= form.submit %>
+		</P>
+	<% end %>
+</DIV>
+
+<SCRIPT>
+	updateTotal();
+	var feedPrices = <%= Feedstock.find_each.collect{|f| f.price} %>
+	$(".add").click(function() {
+		var $tr = $('#product' + cloneCount);
+		cloneCount ++;
+		var $klon = $tr.clone().prop('id', 'product' + cloneCount);
+		var childs = $klon.children();
+		var sel = $(childs[0]).children().first();
+		var amm = $(childs[1]).children().first();
+		var pri = $(childs[2]).children().first();
+		sel.prop('id', "feedstocks" + cloneCount);
+		sel.prop('name', "expenditure[feedstocks][]");
+		sel.attr('onchange', "change(" + cloneCount + ");");
+		sel.val('1');
+		amm.prop('id', "ammounts" + cloneCount);
+		amm.prop('name', "expenditure[ammounts][]");
+		amm.attr('onkeyup', "change(" + cloneCount + ");");
+		amm.val(1);
+		pri.prop('id', "prices" + cloneCount);
+		pri.prop('name', "expenditure[prices][]");
+		pri.val(feedPrices[0]);
+		$tr.after($klon);
+		updateTotal();
+		return false;
+	});
+	$(".remove").click(function(){
+		if (cloneCount > 0){
+			cloneCount --;
+			$("[id^=product]").last().remove();
+			updateTotal();
+		}
+	});
+	function change(id){
+		var feedId = $("#feedstocks"+id).val();
+		var ammount = $("#ammounts"+id).val();
+		$("#prices"+id).val(ammount * feedPrices[feedId-1]);
+		updateTotal();
+	}
+	function updateTotal(){
+		var totalField = $("#expenditure_total");
+		var totalHidden = $("#expenditure_total_value");
+		var totalVal = 0;
+		$("[id^=prices]").each(function(){
+			totalVal += parseInt($(this).val());
+		});
+		totalField.val(totalVal);
+		totalHidden.val(totalVal);
+	}
+</SCRIPT>

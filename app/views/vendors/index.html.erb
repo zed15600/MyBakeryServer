@@ -1,0 +1,20 @@
+<DIV class="index" id="vendor_index">
+	<H1>Listing all vendors</H1>
+	<TABLE>
+		<TR>
+			<TH>Name</TH>
+			<TH>Profit</TH>
+			<TH>Debt</TH>
+			<TH colspan="2"></TH>
+		</TR>
+		<% @vendors.each do |vendor| %>
+			<TR>
+				<TD><%= vendor.name %></TD>
+				<TD><CENTER><%= vendor.profit %>%</CENTER></TD>
+				<TD>$<%= vendor.debt %></TD>
+				<TD><%= link_to 'Show', vendor_path(vendor) %></TD>
+				<TD><%= link_to 'Edit', edit_vendor_path(vendor) %></TD>
+			</TR>
+		<% end %>
+	</TABLE>
+</DIV>

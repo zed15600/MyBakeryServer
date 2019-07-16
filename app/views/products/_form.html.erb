@@ -1,0 +1,29 @@
+<DIV class="form" id="product_form">
+	<%= form_with model: @product, local: true do |form| %>
+		<% if @product.errors.any? %>
+			<DIV class="error" id="error_explanation">
+				<H2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</H2>
+				<UL>
+					<% @product.errors.full_messages.each do |msg| %>
+						<LI><%= msg %></LI>
+					<% end %>
+				</UL>
+			</DIV>
+		<% end %>
+		<P>
+			<%= form.label :name %><BR>
+			<%= form.text_field :name %>
+		</P>
+		<P>
+			<%= form.label :description %><BR>
+			<%= form.text_area :description %>
+		</P>
+		<P>
+			<%= form.label :price %><BR>
+			<%= form.number_field :price %>
+		</P>
+		<P>
+			<%= form.submit %>
+		</P>
+	<% end %>
+</DIV>

@@ -1,0 +1,9 @@
+<DIV class="show" id="product_show">
+	<H1>Show Product</H1>
+	<P>
+		<STRONG><%= @product.name %></STRONG><BR>
+		<%= @product.description %><BR>
+		<%= @product.price %>
+	</P>
+	<%= link_to 'Edit', edit_product_path(@product) %>
+</DIV>

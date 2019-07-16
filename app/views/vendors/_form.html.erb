@@ -1,0 +1,25 @@
+<DIV class="form" id="vendor_form">
+	<%= form_with model: @vendor, local: true do |form| %>
+		<% if @vendor.errors.any? %>
+			<DIV class="error" id="error_explanation">
+				<H2><%= pluralize(@vendor.errors.count, "errors")%> prohibited this vendor from being saved:</H2>
+				<UL>
+					<% @vendor.errors.full_messages.each do |msg| %>
+						<LI><%= msg %></LI>
+					<% end %>
+				</UL>
+			</DIV>
+		<% end %>
+		<P>
+			<%= form.label :name %><BR>
+			<%= form.text_field :name %>
+		</P>
+		<P>
+			<%= form.label :profit %><BR>
+			<%= form.number_field :profit, :value => (@vendor.profit==nil ? 0 : @vendor.profit) %>
+		</P>
+		<P>
+			<%= form.submit %>
+		</P>
+	<% end %>
+</DIV>

@@ -1,0 +1,20 @@
+<DIV class="show" id="feedstock_show">
+	<H1>Show Feedstock</H1>
+	<P>
+		<STRONG>Name</Strong>
+		<%= @feedstock.name %>
+	</P>
+	<P>
+		<STRONG>Price</STRONG>
+		<%= @feedstock.price %>
+	</P>
+	<P>
+		<STRONG>Unit</STRONG>
+		<%= @feedstock.unit %>
+	</P>
+	<P>
+		<STRONG>Provides</STRONG>
+		<%= @feedstock.provider %>
+	</P>
+	<%= link_to 'Edit', edit_feedstock_path(@feedstock) %>
+</DIV>

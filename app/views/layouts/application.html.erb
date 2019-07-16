@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Postres</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+		<DIV id="banner">
+			<TABLE id="tblbanner">
+				<TD>
+					<DIV class="dropdown">
+						<BUTTON class="dropbtn">Vendors</BUTTON>
+						<DIV class="dropdown-content">
+							<%= link_to :List, vendors_path %><BR>
+							<%= link_to :New, new_vendor_path %>
+						</DIV>
+					</DIV>
+				</TD>
+				<TD>
+					<DIV class="dropdown">
+						<BUTTON class="dropbtn">Products</BUTTON>
+						<DIV class="dropdown-content">
+							<%= link_to :List, products_path %>
+							<%= link_to :New, new_product_path %>
+						</DIV>
+					</DIV>
+				</TD>
+				<TD>
+          <DIV class="dropdown">
+            <BUTTON class="dropbtn">Sales</BUTTON>
+            <DIV class="dropdown-content">
+              <%= link_to :List, sales_path %>
+              <%= link_to :New, new_sale_path %>
+            </DIV>
+          </DIV>
+        </TD>
+				<TD>
+          <DIV class="dropdown">
+            <BUTTON class="dropbtn">Payments</BUTTON>
+            <DIV class="dropdown-content">
+              <%= link_to :List, payments_path %>
+              <%= link_to :New, new_payment_path %>
+            </DIV>
+          </DIV>
+        </TD>
+				<TD>
+          <DIV class="dropdown">
+            <BUTTON class="dropbtn">Feedstocks</BUTTON>
+            <DIV class="dropdown-content">
+              <%= link_to :List, feedstocks_path %>
+              <%= link_to :New, new_feedstock_path %>
+            </DIV>
+          </DIV>
+        </TD>
+				<TD>
+          <DIV class="dropdown">
+            <BUTTON class="dropbtn">Expenditures</BUTTON>
+            <DIV class="dropdown-content">
+              <%= link_to :List, expenditures_path %>
+              <%= link_to :New, new_expenditure_path %>
+            </DIV>
+          </DIV>
+        </TD>
+			</TABLE>
+			<DIV class="dropdown" id="reports">
+				<BUTTON class="dropbtn">Expenditures</BUTTON>
+					<DIV class="dropdown-content">
+						<%= link_to :Week, report_week_path(1) %>
+						<%# link_to :New, new_expenditure_path %>
+					</DIV>
+			</DIV>
+		</DIV>
+    <%= yield %>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<% feedstock_count = @expenditure.feedstocks.count %>
+<DIV class="show" id="expenditure_show">
+	<H1>Show Expenditure</H1>
+	<TABLE border="1">
+		<TR>
+			<TH>Date</TD>
+			<TH>Products</TD>
+			<TH>Ammount</TH>
+			<TH>Price</TH>
+		</TR>
+		<TR>
+			<TD rowspan="<%= feedstock_count+2 %>"><%= @expenditure.date %></TD>
+			<TD/><TD/><TD/>
+		</TR>
+		<% total = 0 %>
+		<% @expenditure.expenditures_feedstocks.each do |feedstock| %>
+			<% ammount = feedstock.ammount %>
+			<TR>
+				<TD><%= feedstock.feedstock.name %></TD>
+				<TD><%= ammount %></TD>
+				<TD><%= ammount*feedstock.feedstock.price %>
+			</TR>
+		<% end %>
+		<TR>
+			<TD rowspan="<%= feedstock_count+1 %>"></TD>
+			<TH>Total</TH>
+			<TH><%= @expenditure.total_value %></TH>
+		</TR>
+	</TABLE>
+	<%= link_to 'Edit', edit_expenditure_path(@expenditure) %>
+</DIV>

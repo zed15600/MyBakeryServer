@@ -1,0 +1,30 @@
+<DIV class="show" id="sale_show">
+	<H1>Show Sale</H1>
+	<TABLE>
+		<TR>
+			<TH>Item</TH>
+			<TH>Value</TH>
+		</TR>
+		<TR>
+			<TD><STRONG>Date</STRONG></TD>
+			<TD><%= @sale.date %></TD>
+		</TR>
+		<TR>
+			<TD><STRONG>Product</STRONG></TD>
+			<TD><%= @sale.product.name %></TD>
+		</TR>
+		<TR>
+			<TD><STRONG>Ammount</STRONG></TD>
+			<TD><%= @sale.ammount %></TD>
+		</TR>
+		<TR>
+			<TD><STRONG>Discount</STRONG></TD>
+			<TD><%= @sale.discount %></TD>
+		</TR>
+		<TR>
+			<TD><STRONG>Vendor</STRONG></TD>
+			<TD><%= @sale.vendor.name %></TD>
+		</TR>
+	</TABLE>
+	<%= link_to 'Edit', edit_sale_path(@sale) %>
+</DIV>

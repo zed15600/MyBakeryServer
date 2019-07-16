@@ -1,0 +1,16 @@
+<DIV class="show" id="payment_show">
+	<H1>Show Payment</H1>
+	<P>
+		<STRONG>Date</STRONG><BR>
+		<%= @payment.date %>
+	</P>
+	<P>
+		<STRONG>Vendor</STRONG><BR>
+		<%= @payment.vendor.name %>
+	</P>
+	<P>
+		<STRONG>Value</STRONG><BR>
+		<%= @payment.value %>
+	</P>
+	<%= link_to 'Edit', edit_payment_path(@payment) %>
+</DIV>

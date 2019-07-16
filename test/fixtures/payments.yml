@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2019-01-24
+  vendor: one
+  ammount: 1
+
+two:
+  date: 2019-01-24
+  vendor: two
+  ammount: 1

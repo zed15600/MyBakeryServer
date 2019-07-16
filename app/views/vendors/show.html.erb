@@ -1,0 +1,15 @@
+<DIV class="show" id="vendor_show">
+	<P>
+		<STRONG>Name:</STRONG><BR>
+		<%= @vendor.name %>
+	</P>
+	<P>
+		<STRONG>Profit:</STRONG><BR>
+		<%= @vendor.profit %>
+	</P>
+	<P>
+		<STRONG>Debt:</STRONG><BR>
+		<%= @vendor.debt %>
+	</P>
+	<%= link_to 'Edit', edit_vendor_path(@vendor) %>
+</DIV>

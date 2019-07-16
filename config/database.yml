@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: mybakery
+  password: 15600
+  host: localhost
+
+development:
+  <<: *default
+  database: Postres_development
+
+test:
+  <<: *default
+  database: Postres_test
+
+production:
+  <<: *default
+  database: Postres_production

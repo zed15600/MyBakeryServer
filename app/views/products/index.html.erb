@@ -1,0 +1,20 @@
+<DIV class="index" id="product_index">
+	<H1>Listing Products</H1>
+	<TABLE>
+		<TR>
+			<TH>Name</TH>
+			<TH>Description</TH>
+			<TH>Price</TH>
+			<TH colspan="2"></TH>
+		</TR>
+		<% @products.each do |product| %>
+			<TR>
+				<TD><%= product.name %></TD>
+				<TD><%= product.description %></TD>
+				<TD><%= product.price %></TD>
+				<TD><%= link_to 'Show', product_path(product) %></TD>
+				<TD><%= link_to 'Edit', edit_product_path(product) %></TD>
+			</TR>
+		<% end %>
+	</TABLE>
+</DIV>

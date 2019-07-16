@@ -1,0 +1,29 @@
+<DIV class="new" id="sale_new">
+	<H1>Listing Sales</H1>
+	<TABLE>
+		<TR>
+			<TH>Date</TH>
+			<TH>Product</TH>
+			<TH>Ammount</TH>
+			<TH>Discount</TH>
+			<TH>Total</TH>
+			<TH>Vendor</TH>
+			<TH>Profit</TH>
+			<TH colspan="2"></TH>
+		</TR>
+		<% @sales.order(:date).each do |sale| %>
+			<TR>
+				<% total = sale.product.price * sale.ammount %>
+				<TD><%= sale.date %></TD>
+				<TD><%= sale.product.name %>
+				<TD><%= sale.ammount %></TD>
+				<TD><%= sale.discount %></TD>
+				<TD><%= total %></TD>
+				<TD><%= sale.vendor.name %></TD>
+				<TD><%= total*sale.vendor.profit/100 %></TD>
+				<TD><%= link_to 'Show', sale_path(sale) %></TD>
+				<TD><%= link_to 'Edit', edit_sale_path(sale) %></TD>
+			</TR>
+		<% end %>
+	</TABLE>
+</DIV>

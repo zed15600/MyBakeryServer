@@ -1,0 +1,22 @@
+<DIV class="index" id="feedstock_new">
+	<H1>List Feedstocks</H1>
+	<TABLE>
+		<TR>
+			<TH>Name</TH>
+			<TH>Price</TH>
+			<TH>Unit</TH>
+			<TH>Provider</TH>
+			<TH colspan="2"/>
+		</TR>
+		<% @feedstocks.each do |feedstock| %>
+			<TR>
+				<TD><%= feedstock.name %></TD>
+				<TD><%= feedstock.price %></TD>
+				<TD><%= feedstock.unit %></TD>
+				<TD><%= feedstock.provider %></TD>
+				<TD><%= link_to 'Show', feedstock_path(feedstock) %></TD>
+				<TD><%= link_to 'Edit', edit_feedstock_path(feedstock) %></TD>
+			</TR>
+		<% end %>
+	</TABLE>
+</DIV>

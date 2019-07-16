@@ -1,0 +1,18 @@
+<DIV class="index" id="expenditure_index">
+	<H1>List Expenditures</H1>
+	<TABLE>
+		<TR>
+			<TH>Date</TH>
+			<TH>Price</TH>
+			<TH colspan="2"/>
+		</TR>
+		<% @expenditures.each do |expenditure| %>
+			<TR>
+				<TD><%= expenditure.date %></TD>
+				<TD>$<%= expenditure.total_value %></TD>
+				<TD><%= link_to 'Details', expenditure_path(expenditure) %></TD>
+				<TD><%= link_to 'Edit', edit_expenditure_path(expenditure) %></TD>
+			</TR>
+		<% end %>
+	</TABLE>
+</DIV>
