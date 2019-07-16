@@ -1,0 +1,17 @@
+[Unit]
+Description=MyBakery
+Requires=network.target
+Requires=postgresql-11.service
+
+[Service]
+Type=simple
+User=ec2-user
+Group=ec2-user
+WorkingDirectory=/home/ec2-user/Postres
+ExecStart=/usr/bin/bash -lc 'rails s'
+TimeoutSec=30
+RestartSex=15s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
