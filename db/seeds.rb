@@ -1,51 +1,3 @@
-Expenditure.create!([
-  {date: "2019-06-16", total_value: 68800},
-  {date: "2019-06-15", total_value: 181244},
-  {date: "2019-06-15", total_value: 47920},
-  {date: "2019-06-15", total_value: 12500},
-  {date: "2019-06-24", total_value: 36600},
-  {date: "2019-06-30", total_value: 427459},
-  {date: "2019-06-29", total_value: 267700},
-  {date: "2019-07-06", total_value: 10000},
-  {date: "2019-07-14", total_value: 80736}
-])
-ExpendituresFeedstock.create!([
-  {expenditure_id: 1, feedstock_id: 1, ammount: 8, price: 47200},
-  {expenditure_id: 1, feedstock_id: 2, ammount: 4, price: 21600},
-  {expenditure_id: 2, feedstock_id: 3, ammount: 4, price: 181244},
-  {expenditure_id: 3, feedstock_id: 4, ammount: 8, price: 47920},
-  {expenditure_id: 4, feedstock_id: 5, ammount: 12500, price: 12500},
-  {expenditure_id: 5, feedstock_id: 6, ammount: 6, price: 36600},
-  {expenditure_id: 8, feedstock_id: 11, ammount: 300000, price: 300000},
-  {expenditure_id: 8, feedstock_id: 10, ammount: 127459, price: 127459},
-  {expenditure_id: nil, feedstock_id: 8, ammount: 1, price: 126400},
-  {expenditure_id: nil, feedstock_id: 7, ammount: 1, price: 86300},
-  {expenditure_id: nil, feedstock_id: 8, ammount: 1, price: 126400},
-  {expenditure_id: nil, feedstock_id: 9, ammount: 1, price: 55000},
-  {expenditure_id: nil, feedstock_id: 7, ammount: 1, price: 86300},
-  {expenditure_id: nil, feedstock_id: 9, ammount: 1, price: 55000},
-  {expenditure_id: nil, feedstock_id: 9, ammount: 1, price: 55000},
-  {expenditure_id: nil, feedstock_id: 9, ammount: 1, price: 55000},
-  {expenditure_id: nil, feedstock_id: 7, ammount: 1, price: 86300},
-  {expenditure_id: nil, feedstock_id: 9, ammount: 1, price: 55000},
-  {expenditure_id: nil, feedstock_id: 8, ammount: 1, price: 126400},
-  {expenditure_id: nil, feedstock_id: 7, ammount: 1, price: 86300},
-  {expenditure_id: nil, feedstock_id: 8, ammount: 1, price: 126400},
-  {expenditure_id: 6, feedstock_id: 9, ammount: 1, price: 55000},
-  {expenditure_id: nil, feedstock_id: 8, ammount: 1, price: 126400},
-  {expenditure_id: nil, feedstock_id: 7, ammount: 1, price: 86300},
-  {expenditure_id: nil, feedstock_id: 8, ammount: 1, price: 126400},
-  {expenditure_id: nil, feedstock_id: 9, ammount: 1, price: 55000},
-  {expenditure_id: nil, feedstock_id: 7, ammount: 1, price: 86300},
-  {expenditure_id: 6, feedstock_id: 8, ammount: 1, price: 126400},
-  {expenditure_id: 6, feedstock_id: 7, ammount: 1, price: 86300},
-  {expenditure_id: nil, feedstock_id: 4, ammount: 10, price: 59900},
-  {expenditure_id: 9, feedstock_id: 13, ammount: 4, price: 26236},
-  {expenditure_id: 9, feedstock_id: 12, ammount: 3, price: 49500},
-  {expenditure_id: 10, feedstock_id: 5, ammount: 4000, price: 4000},
-  {expenditure_id: 10, feedstock_id: 14, ammount: 1, price: 6000},
-  {expenditure_id: 9, feedstock_id: 5, ammount: 5000, price: 5000}
-])
 Feedstock.create!([
   {name: "Queso crema colanta", unit: "400g", price: 5900, provider: "Mervelez"},
   {name: "Queso crema alpina", unit: "380", price: 5400, provider: "Mervelez"},
@@ -61,6 +13,39 @@ Feedstock.create!([
   {name: "Galletas Ducales 12*9 tacos", unit: "1.456Kg", price: 16500, provider: "Autoservicio Moravia"},
   {name: "Galletas de milo", unit: "72Unidades", price: 6559, provider: "Autoservicio Moravia"},
   {name: "Nevera de icopor", unit: "1Unidad", price: 6000, provider: "Luz Marina"}
+])
+Vendor.create!([
+  {name: "Luz Marina", profit: 0, debt: 383500},
+  {name: "Edison Zapata", profit: 0, debt: 410428}
+])
+Expenditure.create!([
+  {date: "2019-06-16", total_value: 68800},
+  {date: "2019-06-15", total_value: 181244},
+  {date: "2019-06-15", total_value: 47920},
+  {date: "2019-06-15", total_value: 12500},
+  {date: "2019-06-24", total_value: 36600},
+  {date: "2019-06-29", total_value: 267700},
+  {date: "2019-06-30", total_value: 427459},
+  {date: "2019-07-14", total_value: 80736},
+  {date: "2019-07-06", total_value: 10000}
+])
+ExpendituresFeedstock.create!([
+  {expenditure_id: 1, feedstock_id: 1, ammount: 8, price: 47200},
+  {expenditure_id: 1, feedstock_id: 2, ammount: 4, price: 21600},
+  {expenditure_id: 2, feedstock_id: 3, ammount: 4, price: 181244},
+  {expenditure_id: 3, feedstock_id: 4, ammount: 8, price: 47920},
+  {expenditure_id: 4, feedstock_id: 5, ammount: 12500, price: 12500},
+  {expenditure_id: 5, feedstock_id: 6, ammount: 6, price: 36600},
+  {expenditure_id: 6, feedstock_id: 9, ammount: 1, price: 55000},
+  {expenditure_id: 6, feedstock_id: 8, ammount: 1, price: 126400},
+  {expenditure_id: 6, feedstock_id: 7, ammount: 1, price: 86300},
+  {expenditure_id: 7, feedstock_id: 11, ammount: 300000, price: 300000},
+  {expenditure_id: 7, feedstock_id: 10, ammount: 127459, price: 127459},
+  {expenditure_id: 8, feedstock_id: 13, ammount: 4, price: 26236},
+  {expenditure_id: 8, feedstock_id: 12, ammount: 3, price: 49500},
+  {expenditure_id: 8, feedstock_id: 5, ammount: 5000, price: 5000},
+  {expenditure_id: 9, feedstock_id: 5, ammount: 4000, price: 4000},
+  {expenditure_id: 9, feedstock_id: 14, ammount: 1, price: 6000}
 ])
 Payment.create!([
   {date: "2019-05-12", vendor_id: 1, value: 21000},
@@ -163,8 +148,4 @@ Sale.create!([
   {date: "2019-07-10", product_id: 1, ammount: 10, discount: 0.0, vendor_id: 1, total_value: 30000, vendors_profit: 0},
   {date: "2019-07-11", product_id: 1, ammount: 34, discount: 0.0, vendor_id: 1, total_value: 102000, vendors_profit: 0},
   {date: "2019-07-13", product_id: 1, ammount: 33, discount: 0.0, vendor_id: 1, total_value: 99000, vendors_profit: 0}
-])
-Vendor.create!([
-  {name: "Luz Marina", profit: 0, debt: 383500},
-  {name: "Edison Zapata", profit: 0, debt: 410428}
 ])
