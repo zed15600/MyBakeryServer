@@ -36,7 +36,7 @@
 						<% detailNil = expDetails[i]==nil %>
 						<% ammount = detailNil ? 1 : expDetails[i][1] %>
 						<% feed_id = detailNil ? 1 : expDetails[i][0] %>
-						<TD><%= form.select "", options_for_select(feedstocks, selected: detailNil ? 1 : feed_id), {}, {:name => "expenditure[feedstocks][]", :id => "feedstocks"+i.to_s, :onchange => 'change('+i.to_s+');'} %></TD>
+						<TD><%= form.select "", options_for_select(feedstocks, selected: detailNil ? 1 : feed_id), {}, {:name => "expenditure[feedstock_ids][]", :id => "feedstock_ids"+i.to_s, :onchange => 'change('+i.to_s+');'} %></TD>
 						<TD><%= form.number_field "", :onkeyup => 'change('+i.to_s+');', :value => detailNil ? 1 : ammount, :name => "expenditure[ammounts][]", :id => "ammounts"+i.to_s %></TD>
 						<TD><%= form.number_field "", :onkeyup => 'updateTotal();', :value => detailNil ? Feedstock.first().price : expDetails[i][2], :name => "expenditure[prices][]", :id => "prices"+i.to_s %>
 					</TR>
@@ -75,8 +75,8 @@
 		var sel = $(childs[0]).children().first();
 		var amm = $(childs[1]).children().first();
 		var pri = $(childs[2]).children().first();
-		sel.prop('id', "feedstocks" + cloneCount);
-		sel.prop('name', "expenditure[feedstocks][]");
+		sel.prop('id', "feedstock_ids" + cloneCount);
+		sel.prop('name', "expenditure[feedstock_ids][]");
 		sel.attr('onchange', "change(" + cloneCount + ");");
 		sel.val('1');
 		amm.prop('id', "ammounts" + cloneCount);
@@ -98,7 +98,7 @@
 		}
 	});
 	function change(id){
-		var feedId = $("#feedstocks"+id).val();
+		var feedId = $("#feedstock_ids"+id).val();
 		var ammount = $("#ammounts"+id).val();
 		$("#prices"+id).val(ammount * feedPrices[feedId-1]);
 		updateTotal();

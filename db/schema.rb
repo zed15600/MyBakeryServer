@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_26_201617) do
+ActiveRecord::Schema.define(version: 2020_06_22_062752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,11 +35,14 @@ ActiveRecord::Schema.define(version: 2019_06_26_201617) do
 
   create_table "feedstocks", force: :cascade do |t|
     t.string "name"
-    t.string "unit"
     t.integer "price"
-    t.string "provider"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "unit_value"
+    t.bigint "unit_id"
+    t.bigint "provider_id"
+    t.index ["provider_id"], name: "index_feedstocks_on_provider_id"
+    t.index ["unit_id"], name: "index_feedstocks_on_unit_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -59,6 +62,28 @@ ActiveRecord::Schema.define(version: 2019_06_26_201617) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "providers", force: :cascade do |t|
+    t.string "name"
+    t.string "direction"
+    t.integer "contact"
+    t.boolean "deliver"
+    t.integer "deliverCost"
+    t.integer "deliverMinAmount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sale_products", force: :cascade do |t|
+    t.bigint "sale_id"
+    t.bigint "product_id"
+    t.integer "quantity"
+    t.integer "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_sale_products_on_product_id"
+    t.index ["sale_id"], name: "index_sale_products_on_sale_id"
+  end
+
   create_table "sales", force: :cascade do |t|
     t.date "date"
     t.bigint "product_id"
@@ -73,6 +98,15 @@ ActiveRecord::Schema.define(version: 2019_06_26_201617) do
     t.index ["vendor_id"], name: "index_sales_on_vendor_id"
   end
 
+  create_table "units", force: :cascade do |t|
+    t.string "name"
+    t.integer "value"
+    t.bigint "unit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["unit_id"], name: "index_units_on_unit_id"
+  end
+
   create_table "vendors", force: :cascade do |t|
     t.string "name"
     t.integer "profit"
@@ -84,6 +118,9 @@ ActiveRecord::Schema.define(version: 2019_06_26_201617) do
   add_foreign_key "expenditures_feedstocks", "expenditures"
   add_foreign_key "expenditures_feedstocks", "feedstocks"
   add_foreign_key "payments", "vendors"
+  add_foreign_key "sale_products", "products"
+  add_foreign_key "sale_products", "sales"
   add_foreign_key "sales", "products"
   add_foreign_key "sales", "vendors"
+  add_foreign_key "units", "units"
 end

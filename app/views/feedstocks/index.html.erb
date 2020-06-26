@@ -12,8 +12,8 @@
 			<TR>
 				<TD><%= feedstock.name %></TD>
 				<TD><%= feedstock.price %></TD>
-				<TD><%= feedstock.unit %></TD>
-				<TD><%= feedstock.provider %></TD>
+                                <TD><%= "#{feedstock.unit_value}#{feedstock.unit.name}" %></TD>
+				<TD><%= feedstock.provider.name %></TD>
 				<TD><%= link_to 'Show', feedstock_path(feedstock) %></TD>
 				<TD><%= link_to 'Edit', edit_feedstock_path(feedstock) %></TD>
 			</TR>

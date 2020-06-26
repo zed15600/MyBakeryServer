@@ -43,9 +43,9 @@ class FeedstocksController < ApplicationController
   end
 
 
-	private
-		def feedstock_params
-			params.require(:feedstock).permit(:name, :price, :unit, :provider)
-		end
+  private
+  def feedstock_params
+    params.require(:feedstock).permit(:name, :price, :unit_id, :unit_value, :provider_id)
+  end
 
 end

@@ -1,0 +1,7 @@
+<TR class="product">
+  <TD>
+    <%= f.select :product_id, options_for_select(Product.order(:name).map{|p| [p.name, p.id]}, product.product_id) %>
+  </TD>
+  <TD><%= f.number_field :quantity, { value: product.quantity } %></TD>
+  <TD><%= f.number_field :value, { value: product&.value } %></TD>
+</TR>

@@ -34,6 +34,6 @@ class Expenditure < ApplicationRecord
   validates_associated :expenditures_feedstocks
   validates :date, :total_value, presence: true
   validates :total_value, numericality: {only_integer: true}
-  validates_with TotalValidator, NoRepetitionValidator
+#  validates_with TotalValidator, NoRepetitionValidator
 
 end

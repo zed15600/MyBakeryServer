@@ -32,13 +32,13 @@ class ExpendituresController < ApplicationController
   end
 
   def create
-		pars = exp_params
-		@expenditure = Expenditure.new
-		@expenditure.date = pars[:date]
-		@expenditure.total_value = pars[:total_value]
-		for i in 0..pars[:feedstocks].length-1 do
-			add_feedstock(@expenditure, pars, i)
-		end
+    pars = exp_params
+    @expenditure = Expenditure.new
+    @expenditure.date = pars[:date]
+    @expenditure.total_value = pars[:total_value]
+    for i in 0..pars[:feedstock_ids].length-1 do
+      add_feedstock(@expenditure, pars, i)
+    end
 		if @expenditure.save
 			respond_to do |format|
 				format.json {
@@ -61,13 +61,13 @@ class ExpendituresController < ApplicationController
   end
 
   def update
-		pars = exp_params
-		@expenditure = Expenditure.find(params[:id])
-		@expenditure.date = pars[:date]
-		@expenditure.total_value = pars[:total_value]
-		@expenditure.expenditures_feedstocks.each do |feed|
-			feed_id = feed.feedstock_id
-			respond_to do |format|
+    pars = exp_params
+    @expenditure = Expenditure.find(params[:id])
+    @expenditure.date = pars[:date]
+    @expenditure.total_value = pars[:total_value]
+    @expenditure.expenditures_feedstocks.each do |feed|
+    feed_id = feed.feedstock_id
+      respond_to do |format|
 				format.json {
 					feeds_ids = pars[:feedstocks].collect {|f| f["feedstock_id"]}
 					if feeds_ids.include?(feed_id)
@@ -80,11 +80,11 @@ class ExpendituresController < ApplicationController
 					end
 				}
 				format.html {
-					if pars[:feedstocks].include?(feed_id)
-						i = pars[:feedstocks].index(feed_id)
+					if pars[:feedstock_ids].include?(feed_id)
+						i = pars[:feedstock_ids].index(feed_id)
 						feed.ammount = pars[:ammounts][i]
 						feed.price = pars[:prices][i]
-						pars[:feedstocks].delete_at(i)
+						pars[:feedstock_ids].delete_at(i)
 						pars[:ammounts].delete_at(i)
 						pars[:prices].delete_at(i)
 					else
@@ -94,7 +94,7 @@ class ExpendituresController < ApplicationController
 			end
 		end 
 		feeds = []
-		for i in 0..pars[:feedstocks].length-1 do
+		for i in 0..pars[:feedstock_ids].length-1 do
 			feed = add_feedstock(@expenditure, pars, i)
 			feeds.append(feed)
 		end
@@ -121,30 +121,26 @@ class ExpendituresController < ApplicationController
   end
 
 
-	private
-		def exp_params
-			params.require(:expenditure).permit(:date, :total_value, :feedstocks => [], :ammounts => [], :prices => [], :feedstocks => [:feedstock_id, :ammount, :price])
-		end
+  private
 
-		def add_feedstock(expenditure, pars, i)
-			expFeed = ExpendituresFeedstock.new
-			respond_to do |format|
-				format.json {
-					expFeed = ExpendituresFeedstock.new(pars[:feedstocks][i])
-				}
-				format.html
-			end
-      expFeed.expenditure = expenditure
-			respond_to do |format|
-				format.json 
-				format.html {
-      		expFeed.feedstock = Feedstock.find(pars[:feedstocks][i])
-      		expFeed.ammount = pars[:ammounts][i]
-      		expFeed.price = pars[:prices][i]
-				}
-			end
-      expenditure.expenditures_feedstocks << expFeed
-			return expFeed
-		end
+  def exp_params
+    params.require(:expenditure).permit(:date, :total_value, :feedstock_ids => [], :ammounts => [], :prices => [], :feedstocks => [:feedstock_id, :ammount, :price])
+  end
+
+  def add_feedstock(expenditure, pars, i)
+    expFeed = ExpendituresFeedstock.new
+    respond_to do |format|
+      format.json {
+        expFeed = ExpendituresFeedstock.new(pars[:feedstocks][i])
+      }
+      format.html {
+      	expFeed.feedstock = Feedstock.find(pars[:feedstock_ids][i])
+      	expFeed.ammount = pars[:ammounts][i]
+      	expFeed.price = pars[:prices][i]
+      }
+    end
+    expenditure.expenditures_feedstocks << expFeed
+    return expFeed
+  end
 
 end

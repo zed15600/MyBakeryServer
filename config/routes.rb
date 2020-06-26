@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
 
+#  scope '/bakery' do
   get 'welcome/index'
-	get "/reports/week/:mon", to: "reports#week", as: "report_week"
-  
+  get "/reports/week/:mon", to: "reports#week", as: "report_week"
+
   resources :vendors
   resources :products
   resources :sales
@@ -11,5 +12,6 @@ Rails.application.routes.draw do
 	resources :expenditures
 	
   root 'welcome#index'
+#  end
 
 end

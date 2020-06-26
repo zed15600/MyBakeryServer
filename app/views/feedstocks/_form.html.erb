@@ -1,33 +1,34 @@
 <DIV class="form", id="feedstock_form">
-	<%= form_with model: @feedstock, local: true do |form| %>
-		<% if @feedstock.errors.any? %>
-			<DIV id="error_explanation">
-				<H2><%= pluralize(@feedstock.errors.count, "error") %> prohibited this feedstock from being saved:</H2>
-				<UL>
-					<% @feedstock.errors.full_messages.each do |msg| %>
-						<LI><%= msg %></LI>
-					<% end %>
-				</UL>
-			</DIV>
-		<% end %>
-		<P>
-			<%= form.label :name %><BR>
-			<%= form.text_field :name %>
-		</P>
-		<P>
-			<%= form.label :price %><BR>
-			<%= form.number_field :price %>
-		</P>
-		<P>
-			<%= form.label :unit %><BR>
-			<%= form.text_field :unit %>
-		</P>
-		<P>
-			<%= form.label :provider %><BR>
-			<%= form.text_field :provider %>
-		</P>
-		<P>
-			<%= form.submit %>
-		</P>
-	<% end %>
+  <%= form_with model: @feedstock, local: true do |form| %>
+    <% if @feedstock.errors.any? %>
+      <DIV id="error_explanation">
+	<H2><%= pluralize(@feedstock.errors.count, "error") %> prohibited this feedstock from being saved:</H2>
+	<UL>
+	  <% @feedstock.errors.full_messages.each do |msg| %>
+	    <LI><%= msg %></LI>
+	  <% end %>
+	</UL>
+      </DIV>
+    <% end %>
+    <P>
+      <%= form.label :name %><BR>
+      <%= form.text_field :name %>
+    </P>
+    <P>
+      <%= form.label :price %><BR>
+      <%= form.number_field :price %>
+    </P>
+    <P>
+      <%= form.label :unit %><BR>
+      <%= form.text_field :unit_value %>
+      <%= form.select :unit_id, options_for_select(Unit.all.map{|u| [u.name, u.id]}, @feedstock.unit&.id), {include_blank: "-"} %>
+    </P>
+    <P>
+      <%= form.label :provider_id %><BR>
+      <%= form.select :provider_id, options_for_select(Provider.all.map{|p| [p.name, p.id]}, @feedstock.provider&.id), {include_blank: "-"} %>
+    </P>
+    <P>
+      <%= form.submit %>
+    </P>
+  <% end %>
 </DIV>
