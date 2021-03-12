@@ -12,9 +12,37 @@ end
 
 class Sale < ApplicationRecord
   belongs_to :vendor
-  has_many :sale_products
-  has_many :products, through: :sale_producys
+  has_many :sale_products, dependent: :destroy
+  has_many :products, through: :sale_products
 
   validates :date, :vendor_id, :total_value, presence: true
   validates_with ConsistencyValidator
+
+  scope :by_date, -> { order(date: :desc) }
+
+  after_commit :reduce_stock
+
+  def next
+    return if find_location < 1
+    @ids[find_location - 1]
+  end
+
+  def previous
+    find_location
+    @ids[find_location + 1]
+  end
+
+  #private
+
+  def find_location
+    @ids ||= Sale.by_date.ids
+    @location ||= @ids.index(id)
+  end
+
+  def reduce_stock
+    sale_products.each do |sp|
+      sp.product.stock -= sp.quantity
+      sp.product.save
+    end
+  end
 end

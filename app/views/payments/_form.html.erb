@@ -1,29 +1,33 @@
 <DIV class="form" id="payment_form">
-	<%= form_with model: @payment, local: true do |form| %>
-		<% if @payment.errors.any? %>
-			<DIV id="error_explanation">
-				<H2><%= pluralize(@payment.errors.count, "error") %> prohibited this payment from being saved:</H2>
-				<UL>
-					<% @payment.errors.full_messages.each do |msg| %>
-						<LI><%= mgs %></LI>
-					<% end %>
-				</UL>
-			</DIV>
-		<% end %>
-		<P>
-			<%= form.label :date %>
-			<%= form.date_field :date, :value => @payment.date!=nil ? @payment.date : Date.today %>
-		</P>
-		<P>
-			<%= form.label :vendor %>
-			<%= form.select :vendor_id, options_for_select(Vendor.all.collect {|v| [v.name, v.id]}, :selected => @payment.vendor!=nil ? @payment.vendor.id : 1) %>
-		</P>
-		<P>
-			<%= form.label :value %>
-			<%= form.number_field :value, :value => @payment.value!= nil ? @payment.value : 0 %>
-		</P>
-		<P>
-			<%= form.submit %>
-		</P>
-	<% end %>
+  <%= form_with model: @payment, local: true do |form| %>
+    <% if @payment.errors.any? %>
+      <DIV id="error_explanation">
+	<H2><%= pluralize(@payment.errors.count, "error") %> prohibited this payment from being saved:</H2>
+	<UL>
+	  <% @payment.errors.full_messages.each do |msg| %>
+	    <LI><%= mgs %></LI>
+	  <% end %>
+	</UL>
+      </DIV>
+    <% end %>
+    <P>
+      <%= form.label :date %>
+      <%= form.date_field :date %>
+    </P>
+    <P>
+      <%= form.label :vendor %>
+      <%= form.select :vendor_id, Vendor.all.collect { |v| [v.name, v.id] } %>
+    </P>
+    <P>
+      <%= form.label :value %>
+      <%= form.number_field :value %>
+    </P>
+    <P>
+      <%= form.label :hidden %>
+      <%= form.check_box :hidden %>
+    </P>
+    <P>
+      <%= form.submit %>
+    </P>
+  <% end %>
 </DIV>

@@ -1,34 +1,32 @@
 class ExpendituresController < ApplicationController
 
   def index
-		@expenditures = Expenditure.order(date: :desc).all
-		respond_to do |format|
-			format.json {
-				render json: {results: @expenditures}
-			}
-			format.html
-		end
+    @expenditures = Expenditure.order(date: :desc).all
+    respond_to do |format|
+      format.json { render json: {results: @expenditures} }
+      format.html
+    end
   end
 
   def show
-		@expenditure = Expenditure.find(params[:id])
-		respond_to do |format|
-			format.json {
-				response = @expenditure.to_json
-				response.insert(response.length-1, ",\"feedstocks\":")
-				response.insert(response.length-1, @expenditure.expenditures_feedstocks.to_json)
-				render json: response		
-			}
-			format.html
-		end
+    @expenditure = Expenditure.find(params[:id])
+    respond_to do |format|
+      format.json {
+	response = @expenditure.to_json
+	response.insert(response.length-1, ",\"feedstocks\":")
+	response.insert(response.length-1, @expenditure.expenditures_feedstocks.to_json)
+	render json: response		
+      }
+      format.html
+    end
   end
 
   def new
-		@expenditure = Expenditure.new
+    @expenditure = Expenditure.new
   end
 
   def edit
-		@expenditure = Expenditure.find(params[:id])
+    @expenditure = Expenditure.find(params[:id])
   end
 
   def create
@@ -39,8 +37,8 @@ class ExpendituresController < ApplicationController
     for i in 0..pars[:feedstock_ids].length-1 do
       add_feedstock(@expenditure, pars, i)
     end
-		if @expenditure.save
-			respond_to do |format|
+    if @expenditure.save
+      respond_to do |format|
 				format.json {
 					render json: @expenditure
 				}
@@ -54,7 +52,7 @@ class ExpendituresController < ApplicationController
 					render json: {error: "something went wrong with the request."}, status: 400
 				}
 				format.html {
-					render :action => 'new', :locals => {:@exp2 => feeds}
+					render :action => 'new', :locals => {:@exp2 => []}
 				}
 			end
 		end
@@ -68,11 +66,11 @@ class ExpendituresController < ApplicationController
     @expenditure.expenditures_feedstocks.each do |feed|
     feed_id = feed.feedstock_id
       respond_to do |format|
-				format.json {
-					feeds_ids = pars[:feedstocks].collect {|f| f["feedstock_id"]}
-					if feeds_ids.include?(feed_id)
-						i = feeds_ids.index(feed_id)
-						feed.ammount = pars[:feedstocks][i]["ammount"]
+	format.json {
+	  feeds_ids = pars[:feedstocks].collect {|f| f["feedstock_id"]}
+	  if feeds_ids.include?(feed_id)
+	  i = feeds_ids.index(feed_id)
+			    feed.ammount = pars[:feedstocks][i]["ammount"]
 						feed.price = pars[:feedstocks][i]["price"]
 						pars[:feedstocks].delete_at(i)
 					else

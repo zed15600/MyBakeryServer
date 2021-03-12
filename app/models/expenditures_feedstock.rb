@@ -13,7 +13,7 @@ class ExpendituresFeedstock < ApplicationRecord
   belongs_to :expenditure
   belongs_to :feedstock
 
-  validates :ammount, :price, presence: true, numericality: {only_integer: true, greater_than: 0}
-  validates_with MultiplicityValidator
+  validates :ammount, :price, presence: true, numericality: {greater_than: 0}
+  #validates_with MultiplicityValidator
 
 end

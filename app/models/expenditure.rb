@@ -28,7 +28,7 @@ end
 
 class Expenditure < ApplicationRecord
 
-  has_many :expenditures_feedstocks
+  has_many :expenditures_feedstocks, dependent: :destroy
   has_many :feedstocks, :through => :expenditures_feedstocks
 
   validates_associated :expenditures_feedstocks

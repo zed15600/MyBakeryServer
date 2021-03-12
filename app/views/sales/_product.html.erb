@@ -1,7 +1,11 @@
 <TR class="product">
+  <%= hidden_field_tag "sp_id", product.id %>
   <TD>
-    <%= f.select :product_id, options_for_select(Product.order(:name).map{|p| [p.name, p.id]}, product.product_id) %>
+    <%= select_tag "products[ids][]", options_for_select(products, product.product_id), { id: "prod#{i}", onchange: "update_value(#{i})" } %>
   </TD>
-  <TD><%= f.number_field :quantity, { value: product.quantity } %></TD>
-  <TD><%= f.number_field :value, { value: product&.value } %></TD>
+  <TD><%= number_field_tag "products[quantities][]", product.quantity, { id: "quan#{i}", onchange: "update_value(#{i});" } %></TD>
+  <TD><%= number_field_tag "products[values][]", product.value, { id: "total#{i}" } %></TD>
+  <% if product.id && @sale.id %>
+    <TD><DIV id="product_pay" style="background-color: <%= get_product_status(product) %>; width: 10px; height: 10px; margin: auto;"/></TD>
+  <% end %>
 </TR>

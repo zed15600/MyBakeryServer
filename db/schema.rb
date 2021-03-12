@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_22_062752) do
+ActiveRecord::Schema.define(version: 2021_03_12_165804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_062752) do
   create_table "expenditures_feedstocks", force: :cascade do |t|
     t.bigint "expenditure_id"
     t.bigint "feedstock_id"
-    t.integer "ammount"
+    t.float "ammount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price"
@@ -51,7 +51,17 @@ ActiveRecord::Schema.define(version: 2020_06_22_062752) do
     t.integer "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "hidden", default: false
     t.index ["vendor_id"], name: "index_payments_on_vendor_id"
+  end
+
+  create_table "productions", force: :cascade do |t|
+    t.bigint "product_id"
+    t.date "date"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_productions_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -60,6 +70,8 @@ ActiveRecord::Schema.define(version: 2020_06_22_062752) do
     t.integer "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "pay_order"
+    t.integer "stock", default: 0, null: false
   end
 
   create_table "providers", force: :cascade do |t|
@@ -73,6 +85,25 @@ ActiveRecord::Schema.define(version: 2020_06_22_062752) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "recipe_ingredients", force: :cascade do |t|
+    t.bigint "stock_id"
+    t.integer "quantity"
+    t.bigint "unit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stock_id"], name: "index_recipe_ingredients_on_stock_id"
+    t.index ["unit_id"], name: "index_recipe_ingredients_on_unit_id"
+  end
+
+  create_table "recipes", force: :cascade do |t|
+    t.string "name"
+    t.bigint "product_id"
+    t.integer "expected_quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_recipes_on_product_id"
+  end
+
   create_table "sale_products", force: :cascade do |t|
     t.bigint "sale_id"
     t.bigint "product_id"
@@ -80,22 +111,30 @@ ActiveRecord::Schema.define(version: 2020_06_22_062752) do
     t.integer "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "paid_amount", default: 0
     t.index ["product_id"], name: "index_sale_products_on_product_id"
     t.index ["sale_id"], name: "index_sale_products_on_sale_id"
   end
 
   create_table "sales", force: :cascade do |t|
     t.date "date"
-    t.bigint "product_id"
-    t.integer "ammount"
     t.float "discount", default: 0.0, null: false
     t.bigint "vendor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "total_value"
     t.integer "vendors_profit", default: 0, null: false
-    t.index ["product_id"], name: "index_sales_on_product_id"
     t.index ["vendor_id"], name: "index_sales_on_vendor_id"
+  end
+
+  create_table "stocks", force: :cascade do |t|
+    t.string "name"
+    t.integer "quantity"
+    t.integer "min_stock"
+    t.bigint "unit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["unit_id"], name: "index_stocks_on_unit_id"
   end
 
   create_table "units", force: :cascade do |t|
@@ -118,9 +157,13 @@ ActiveRecord::Schema.define(version: 2020_06_22_062752) do
   add_foreign_key "expenditures_feedstocks", "expenditures"
   add_foreign_key "expenditures_feedstocks", "feedstocks"
   add_foreign_key "payments", "vendors"
+  add_foreign_key "productions", "products"
+  add_foreign_key "recipe_ingredients", "stocks"
+  add_foreign_key "recipe_ingredients", "units"
+  add_foreign_key "recipes", "products"
   add_foreign_key "sale_products", "products"
   add_foreign_key "sale_products", "sales"
-  add_foreign_key "sales", "products"
   add_foreign_key "sales", "vendors"
+  add_foreign_key "stocks", "units"
   add_foreign_key "units", "units"
 end

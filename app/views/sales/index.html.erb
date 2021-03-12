@@ -2,19 +2,26 @@
   <H1>Listing Sales</H1>
   <TABLE>
     <TR>
+      <TD><%= select_tag :vendor, options_for_select(Vendor.all.map{|v| [v.name, v.id]}, selected=@vendor_id), {include_blank: "Vendor"} %></TD>
+    </TR>
+    <TR>
       <TH>Date</TH>
       <TH>Total</TH>
+      <TH>Pay Status</TH>
       <TH>Vendor</TH>
-      <TH colspan="2"></TH>
+      <TH></TH>
     </TR>
     <% @sales.order(:date).each do |sale| %>
       <TR>
 	<TD><%= sale.date %></TD>
         <TD><%= sale.total_value %></TD>
+        <TD>
+          <DIV style="background-color: <%= get_sale_status(sale) %>; width: 10px; height: 10px; margin: auto"/>
+        </TD>
         <TD><%= sale.vendor.name %></TD>
-        <TD><%= link_to 'Show', sale_path(sale) %></TD>
 	<TD><%= link_to 'Edit', edit_sale_path(sale) %></TD>
       </TR>
     <% end %>
   </TABLE>
 </DIV>
+<%= javascript_include_tag "sales" %>

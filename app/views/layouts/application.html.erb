@@ -10,22 +10,22 @@
   </head>
 
   <body>
-		<DIV id="banner">
-			<TABLE id="tblbanner">
-				<TD>
-					<DIV class="dropdown">
-						<BUTTON class="dropbtn">Vendors</BUTTON>
-						<DIV class="dropdown-content">
-							<%= link_to :List, vendors_path %><BR>
-							<%= link_to :New, new_vendor_path %>
-						</DIV>
-					</DIV>
-				</TD>
-				<TD>
-					<DIV class="dropdown">
-						<BUTTON class="dropbtn">Products</BUTTON>
-						<DIV class="dropdown-content">
-							<%= link_to :List, products_path %>
+    <DIV id="banner">
+      <TABLE id="tblbanner">
+	<TD>
+	  <DIV class="dropdown">
+	    <BUTTON class="dropbtn">Vendors</BUTTON>
+	    <DIV class="dropdown-content">
+	      <%= link_to :List, vendors_path %><BR>
+	      <%= link_to :New, new_vendor_path %>
+	    </DIV>
+	  </DIV>
+	</TD>
+	<TD>
+	  <DIV class="dropdown">
+	    <BUTTON class="dropbtn">Products</BUTTON>
+	      <DIV class="dropdown-content">
+		<%= link_to :List, products_path %>
 							<%= link_to :New, new_product_path %>
 						</DIV>
 					</DIV>

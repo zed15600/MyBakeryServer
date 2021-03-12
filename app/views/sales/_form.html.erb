@@ -1,3 +1,4 @@
+<SCRIPT>products_count = 0</SCRIPT>
 <DIV class="form" id="sale_form">
   <%= form_with model: @sale, local: true do |form| %>
     <% if @sale.errors.any? %>
@@ -18,7 +19,7 @@
       <TR>
         <TH><%= form.label "Total Value" %></TH>
 	<TD>
-          <%= number_field_tag :total, @sale.total_value, { disabled: true } %>
+          <%= number_field_tag :total_v, @sale.total_value, { disabled: true } %>
           <%= form.hidden_field :total_value, :value => @sale.total_value %>
 	</TD>
       </TR>
@@ -26,32 +27,34 @@
     	<TH><%= form.label :vendor %></TH>
       	<TD><%= form.select :vendor_id, options_for_select(Vendor.all.collect {|v| [v.name, v.id]}, :selected => @sale.vendor_id!=nil ? @sale.vendor_id : 1), {}, {:onchange => "updateVendorsProfit();"} %></TD>
       </TR>
+      <TR>
+        <TH colspan=3>Products</TH>
+        <% if @sale.id %>
+          <TH>Pay</TH>
+        <% end %>
+      </TR>
+      <% @i = 0 %>
+      <% @products = Product.order(name: :asc).map { |p| [p.name, p.price, p.id] } %>
       <% @sale.sale_products.each do |sp| %>
-        <%= render partial: "product", locals: { f: form, product: sp } %>
+        <%= render partial: "product", locals: { f: form, product: sp, i: @i, products: @products } %>
+        <% @i += 1 %>
       <% end %>
+      <TR>
+        <TD>
+          <SPAN id="add">+</SPAN>
+        </TD>
+        <TD>
+          <SPAN id="del">-</SPAN>
+        </TD>
+      </TR>
       <TR>
 	<TD colspan=2><CENTER><%= form.submit %></CENTER></TD>
       </TR>
     </TABLE>
   <% end %>
 </DIV>
-<SCRIPT>
-	productsPrices = <%= Product.order(:id).collect{|p| p.price} %>;
-	vendorssProfits = <%= Vendor.order(:id).collect{|v| v.profit} %>
-	updateTotal();
-	function updateTotal(){
-		var productID = parseInt($("#sale_product_id").val());
-		var ammount = parseInt($("#sale_ammount").val());
-		var discount = parseFloat($("#sale_discount").val());
-		var total = productsPrices[productID-1]*ammount*(100-discount)/100;
-		total = Math.round(total);
-		$("#sale_total").val(total);
-		$("#sale_total_value").val(total);
-		updateVendorsProfit();
-	}
-	function updateVendorsProfit(){
-		var total = parseInt($("#sale_total").val());
-		var vendorID = parseInt($("#sale_vendor_id").val());
-		$("#sale_vendors_profit").val(total*vendorssProfits[vendorID-1]/100);
-	}
+  <SCRIPT>
+  cloneCount = <%= @i %>
+  productsPrices = <%= @products.sort_by{|o| o[2]}.map{|o| o[1]} %>;
 </SCRIPT>
+<%= javascript_include_tag "sales" %>

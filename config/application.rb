@@ -17,5 +17,13 @@ module Postres
     # the framework and any gems in your application.
     config.time_zone = 'Bogota'
     config.active_record.default_timezone = :local
+    config.assets.enabled                  = true
+    config.assets.digest                   = true
+    config.assets.version                  = '1.0'
+    config.assets.initialize_on_precompile = true
+    config.assets.precompile += %w[
+      sales.js
+      payments.js
+    ]
   end
 end

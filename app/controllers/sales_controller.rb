@@ -1,109 +1,104 @@
 class SalesController < ApplicationController
 
   def index
-		@sales = Sale.order(date: :desc).all
-		respond_to do |format|
-			format.json {
-				render json: {results: @sales}
-			}
-			format.html
-		end
-  end
-
-  def show
-		@sale = Sale.find(params[:id])
+    @vendor_id = params[:vendor_id]
+    @sales = Sale.includes(:sale_products, :vendor).order(date: :desc).all
+    @sales = @sales.where(vendor_id: @vendor_id) if @vendor_id.present?
+    respond_to do |format|
+      format.json { render json: { results: @sales } }
+      format.html
+    end
   end
 
   def new
-		@sale = Sale.new
+    @sale = Sale.new
+    @sale.sale_products << SaleProduct.new
   end
 
   def edit
-		@sale = Sale.find(params[:id])
+    @sale = Sale.find(params[:id])
   end
 
   def create
-		@sale = Sale.new(sale_params)
-		if @sale.save
-			#Add the ammount of the sale to the vendor's debt
-			@sale.vendor.debt += @sale.total_value - check_nulity(@sale.vendors_profit, 0)
-			@sale.vendor.save
-			respond_to do |format|
-				format.json {
-					render json: @sale
-				}
-				format.html {
-					redirect_to @sale
-				}
-			end
-		else
-			respond_to do |format|
-				format.json {
-					render json: {error: "something went wrong with the request."}, status: 400
-				}
-				format.html {
-					render 'new'
-				}
-			end
-		end
+    @sale = Sale.new(sale_params)
+    create_products
+    if @sale.save
+      @sale.vendor.debt += @sale.total_value
+      @sale.vendor.save
+      redirect_to sales_path
+    else
+      render "new"
+    end
   end
 
   def update
-		pars = sale_params
-		@sale = Sale.find(params[:id])
-		saleOld_vendor = @sale.vendor
-		saleOld_value = @sale.total_value
-		saleOld_vendors_profit = @sale.vendors_profit
-		@sale.date = pars[:date]
-		@sale.product_id = pars[:product_id]
-		@sale.ammount = pars[:ammount]
-		@sale.discount = check_nulity(pars[:discount], 0)
-		@sale.vendor_id = pars[:vendor_id]
-		@sale.total_value = pars[:total_value]
-		@sale.vendors_profit = check_nulity(pars[:vendors_profit], 0)
-		if @sale.valid?
-			if @sale.vendor_id_changed?
-				saleOld_vendor.debt -= (saleOld_value - saleOld_vendors_profit)
-				saleOld_vendor.save
-				@sale.vendor.debt += (@sale.total_value -@sale.vendors_profit)
-				@sale.vendor.save
-			elsif @sale.total_value_changed?
-				@sale.vendor.debt += @sale.total_value - @sale.vendors_profit - (saleOld_value - saleOld_vendors_profit)
-				@sale.vendor.save
-			end
-			@sale.save
-			respond_to do |format|
-				format.json {
-					render json: @sale
-				}
-				format.html {
-					redirect_to @sale
-				}
-			end
-		else
-			respond_to do |format|
-				format.json {
-					render json: {error: "something went wrong with the request."}, status: 400
-				}
-				format.html {
-					render 'edit'
-				}
-			end
-		end
+    @sale = Sale.find(params[:id])
+    old_vendor = @sale.vendor
+    old_value = @sale.total_value
+    update_products
+    if @sale.update(sale_params)
+      check_update(old_vendor, old_value)
+      respond_to do |format|
+	format.json { render json: @sale }
+	format.html { redirect_to edit_sale_path(@sale) }
+      end
+    else
+      respond_to do |format|
+	format.json { render json: {error: "something went wrong with the request."}, status: 400 }
+	format.html { render "edit" }
+      end
+    end
   end
 
+  private
 
-	private
-			def sale_params
-				params.require(:sale).permit(:date, :product_id, :ammount, :discount, :vendor_id, :total_value, :vendors_profit)
-			end
-		
-			def check_nulity(value, returnIfNull)
-    		if value != nil
-      		return value
-   	 		else
-     	 		return returnIfNull
-    		end
-  		end
+  def create_products
+    product_params[:ids].each.with_index do |id, i|
+      @sale.sale_products << SaleProduct.create!(parse_product(i))
+    end
+  end
+
+  def update_products
+    p "products: #{product_params[:ids]}"
+    @sale.sale_products.each do |sp|
+      id = sp.product_id.to_s
+      if id.in? product_params[:ids]
+        i = product_params[:ids].index(id)
+        sp.update(quantity: product_params[:quantities][i])
+        product_params[:ids].delete_at(i)
+        product_params[:quantities].delete_at(i)
+      else
+        sp.delete
+      end
+    end
+    create_products
+  end
+
+  def parse_product(i)
+    {
+      product_id: product_params[:ids][i],
+      quantity: product_params[:quantities][i]
+    }
+  end
+
+  def check_update(old_vendor, old_total)
+    if @sale.vendor_id != old_vendor.id
+      old_vendor.debt -= old_total
+      old_vendor.save
+      @sale.vendor.debt += @sale.total_value
+      @sale.vendor.save
+    elsif @sale.total_value != old_total
+      @sale.vendor.debt += @sale.total_value - old_total
+      @sale.vendor.save
+    end
+  end
+
+  def sale_params
+    @pars ||= params.require(:sale).permit(:date, :vendor_id, :total_value)
+  end
+
+  def product_params
+    @products ||= params.require(:products).permit(ids: [], quantities: [])
+  end
 
 end

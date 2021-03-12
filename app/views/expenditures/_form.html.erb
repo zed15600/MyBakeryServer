@@ -1,45 +1,45 @@
 <% feedstocks = Feedstock.find_each.collect {|f| [f.name, f.id]}.sort %>
-<% expDetails = @expenditure.expenditures_feedstocks.collect{|ef| [ef.feedstock_id, ef.ammount, ef.price]} + ((defined? @exp2) ? @exp2 : []) %>
+<% expDetails = @expenditure.expenditures_feedstocks.includes(:feedstock).order("feedstocks.name").collect{|ef| [ef.feedstock_id, ef.ammount, ef.price]} + ((defined? @exp2) ? @exp2 : []) %>
 <% feedsCount = @expenditure.feedstocks.count + ((defined? @exp2) ? @exp2.length : 0) %>
 <SCRIPT>var cloneCount = -1;var exp = <%= expDetails %></SCRIPT>
 <DIV class="form" id="expenditure_form">
-	<%= form_with model: @expenditure, local: true do |form| %>
-		<% if @expenditure.errors.any? %>
-			<DIV i="error_explanation">
-				<H2><%= pluralize(@expenditure.errors.count, "error") %> prohibited this expenditure from bewing saved:</H2>
-				<UL>
-					<% @expenditure.errors.full_messages.each do |msg| %>
-						<LI><%= msg %></LI>
-					<% end %>
-					<% @expenditure.expenditures_feedstocks.each do |feed| %>
-						<% feed.errors.full_messages.each do |msg| %>
-							<LI><%= msg %></LI>
-						<% end %>
-					<% end %>
-				</UL>
-			</DIV>
-		<% end %>
-		<P>
-			<%= form.label :date %><BR>
-			<%= form.date_field :date, :value => @expenditure.date!=nil ? @expenditure.date : Date.today %>
-		</P>
-		<P>
-			<TABLE>
-				<TR>
-					<TH>Product</TH>
-					<TH>Ammount</TH>
-					<TH>Price</TH>
-				</TR>
-				<% i=0 %>
-				<% loop do %>
-					<TR id="product<%= i %>">
-						<% detailNil = expDetails[i]==nil %>
-						<% ammount = detailNil ? 1 : expDetails[i][1] %>
-						<% feed_id = detailNil ? 1 : expDetails[i][0] %>
-						<TD><%= form.select "", options_for_select(feedstocks, selected: detailNil ? 1 : feed_id), {}, {:name => "expenditure[feedstock_ids][]", :id => "feedstock_ids"+i.to_s, :onchange => 'change('+i.to_s+');'} %></TD>
-						<TD><%= form.number_field "", :onkeyup => 'change('+i.to_s+');', :value => detailNil ? 1 : ammount, :name => "expenditure[ammounts][]", :id => "ammounts"+i.to_s %></TD>
-						<TD><%= form.number_field "", :onkeyup => 'updateTotal();', :value => detailNil ? Feedstock.first().price : expDetails[i][2], :name => "expenditure[prices][]", :id => "prices"+i.to_s %>
-					</TR>
+  <%= form_with model: @expenditure, local: true do |form| %>
+    <% if @expenditure.errors.any? %>
+      <DIV i="error_explanation">
+	<H2><%= pluralize(@expenditure.errors.count, "error") %> prohibited this expenditure from bewing saved:</H2>
+	<UL>
+	  <% @expenditure.errors.full_messages.each do |msg| %>
+	    <LI><%= msg %></LI>
+	  <% end %>
+	  <% @expenditure.expenditures_feedstocks.each do |feed| %>
+	    <% feed.errors.full_messages.each do |msg| %>
+	      <LI><%= msg %></LI>
+	    <% end %>
+	  <% end %>
+	</UL>
+      </DIV>
+    <% end %>
+    <P>
+      <%= form.label :date %><BR>
+      <%= form.date_field :date, :value => @expenditure.date!=nil ? @expenditure.date : Date.today %>
+    </P>
+    <P>
+      <TABLE>
+	<TR>
+	  <TH>Product</TH>
+	  <TH>Ammount</TH>
+	  <TH>Price</TH>
+	</TR>
+	<% i=0 %>
+	<% loop do %>
+	  <TR id="product<%= i %>">
+	    <% detailNil = expDetails[i]==nil %>
+	    <% ammount = detailNil ? 1 : expDetails[i][1] %>
+            <% feed_id = detailNil ? 1 : expDetails[i][0] %>
+	    <TD><%= form.select "", options_for_select(feedstocks, selected: detailNil ? 1 : feed_id), {}, {:name => "expenditure[feedstock_ids][]", :id => "feedstock_ids"+i.to_s, :onchange => 'change('+i.to_s+');'} %></TD>
+            <TD><%= form.number_field "", :onkeyup => 'change('+i.to_s+');', :value => detailNil ? 1 : ammount, name: "expenditure[ammounts][]", id: "ammounts"+i.to_s, step: 0.01 %></TD>
+	    <TD><%= form.number_field "", :onkeyup => 'updateTotal();', :value => detailNil ? Feedstock.first().price : expDetails[i][2], :name => "expenditure[prices][]", :id => "prices"+i.to_s %>
+	  </TR>
 					<SCRIPT>cloneCount++</SCRIPT>
 					<% i+=1 %>
 					<% if i>=feedsCount %>
@@ -66,7 +66,7 @@
 
 <SCRIPT>
 	updateTotal();
-	var feedPrices = <%= Feedstock.find_each.collect{|f| f.price} %>
+var feedPrices = <%= Feedstock.find_each.collect{|f| f.price} %>
 	$(".add").click(function() {
 		var $tr = $('#product' + cloneCount);
 		cloneCount ++;
