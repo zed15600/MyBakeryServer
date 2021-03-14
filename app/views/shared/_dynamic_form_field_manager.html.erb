@@ -1,0 +1,25 @@
+<P>
+  <SPAN id=add>Add</SPAN> | 
+  <SPAN id=del>Delete</SPAN>
+</P>
+
+<SCRIPT>
+  $("span#add").click(function() {
+    items = $('[name="clonable"]');
+    count = items.length;
+    last = items.last();
+    clon = last.clone();
+    clon.children().each(function (index) {
+      id = this.id;
+      name = this.name;
+      this.id = id.replace(`_${count-1}_`, `_${count}_`);
+      this.name = name.replace(`[${count-1}]`, `[${count}]`);
+    });
+    last.after(clon);
+  });
+
+  $("span#del").click(() => {
+    if($('[name="clonable"]').length > 1)
+      $('[name="clonable"]').last().remove();
+  });
+</SCRIPT>

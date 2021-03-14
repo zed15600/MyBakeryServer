@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_12_165804) do
+ActiveRecord::Schema.define(version: 2021_03_13_220619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,16 @@ ActiveRecord::Schema.define(version: 2021_03_12_165804) do
     t.index ["vendor_id"], name: "index_payments_on_vendor_id"
   end
 
+  create_table "production_stocks", force: :cascade do |t|
+    t.bigint "production_id"
+    t.bigint "stock_id"
+    t.integer "quantity"
+    t.bigint "unit_id"
+    t.index ["production_id"], name: "index_production_stocks_on_production_id"
+    t.index ["stock_id"], name: "index_production_stocks_on_stock_id"
+    t.index ["unit_id"], name: "index_production_stocks_on_unit_id"
+  end
+
   create_table "productions", force: :cascade do |t|
     t.bigint "product_id"
     t.date "date"
@@ -91,6 +101,8 @@ ActiveRecord::Schema.define(version: 2021_03_12_165804) do
     t.bigint "unit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "recipe_id"
+    t.index ["recipe_id"], name: "index_recipe_ingredients_on_recipe_id"
     t.index ["stock_id"], name: "index_recipe_ingredients_on_stock_id"
     t.index ["unit_id"], name: "index_recipe_ingredients_on_unit_id"
   end
@@ -129,7 +141,7 @@ ActiveRecord::Schema.define(version: 2021_03_12_165804) do
 
   create_table "stocks", force: :cascade do |t|
     t.string "name"
-    t.integer "quantity"
+    t.integer "quantity", default: 0, null: false
     t.integer "min_stock"
     t.bigint "unit_id"
     t.datetime "created_at", null: false
@@ -157,7 +169,11 @@ ActiveRecord::Schema.define(version: 2021_03_12_165804) do
   add_foreign_key "expenditures_feedstocks", "expenditures"
   add_foreign_key "expenditures_feedstocks", "feedstocks"
   add_foreign_key "payments", "vendors"
+  add_foreign_key "production_stocks", "productions"
+  add_foreign_key "production_stocks", "stocks"
+  add_foreign_key "production_stocks", "units"
   add_foreign_key "productions", "products"
+  add_foreign_key "recipe_ingredients", "recipes"
   add_foreign_key "recipe_ingredients", "stocks"
   add_foreign_key "recipe_ingredients", "units"
   add_foreign_key "recipes", "products"

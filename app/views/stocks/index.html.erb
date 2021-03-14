@@ -1,0 +1,13 @@
+<H1>Stocks List</H1>
+<TABLE>
+  <TR>
+    <TH>Stock</TH>
+    <TH>Remaining</TH>
+  </TR>
+  <% @stocks.each do |stock| %>
+    <TR>
+      <TD><%= stock.name %></TD>
+      <TD><%= "#{stock.quantity}#{stock.unit.name}" %></TD>
+    </TR>
+  <% end %>
+</TABLE>

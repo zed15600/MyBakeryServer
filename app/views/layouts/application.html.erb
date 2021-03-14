@@ -12,21 +12,21 @@
   <body>
     <DIV id="banner">
       <TABLE id="tblbanner">
-	<TD>
-	  <DIV class="dropdown">
-	    <BUTTON class="dropbtn">Vendors</BUTTON>
-	    <DIV class="dropdown-content">
-	      <%= link_to :List, vendors_path %><BR>
-	      <%= link_to :New, new_vendor_path %>
-	    </DIV>
-	  </DIV>
-	</TD>
-	<TD>
-	  <DIV class="dropdown">
-	    <BUTTON class="dropbtn">Products</BUTTON>
-	      <DIV class="dropdown-content">
-		<%= link_to :List, products_path %>
-							<%= link_to :New, new_product_path %>
+        <TD>
+          <DIV class="dropdown">
+            <BUTTON class="dropbtn">Vendors</BUTTON>
+            <DIV class="dropdown-content">
+              <%= link_to :List, vendors_path %><BR>
+              <%= link_to :New, new_vendor_path %>
+            </DIV>
+          </DIV>
+        </TD>
+        <TD>
+          <DIV class="dropdown">
+            <BUTTON class="dropbtn">Products</BUTTON>
+              <DIV class="dropdown-content">
+                <%= link_to :List, products_path %>
+                <%= link_to :New, new_product_path %>
 						</DIV>
 					</DIV>
 				</TD>
@@ -52,6 +52,7 @@
           <DIV class="dropdown">
             <BUTTON class="dropbtn">Feedstocks</BUTTON>
             <DIV class="dropdown-content">
+              <%= link_to :Stocks, stocks_path %>
               <%= link_to :List, feedstocks_path %>
               <%= link_to :New, new_feedstock_path %>
             </DIV>
@@ -66,9 +67,18 @@
             </DIV>
           </DIV>
         </TD>
+				<TD>
+          <DIV class="dropdown">
+            <BUTTON class="dropbtn">Recipes</BUTTON>
+            <DIV class="dropdown-content">
+              <%= link_to :List, recipes_path %>
+              <%= link_to :New, new_recipe_path %>
+            </DIV>
+          </DIV>
+        </TD>
 			</TABLE>
 			<DIV class="dropdown" id="reports">
-				<BUTTON class="dropbtn">Expenditures</BUTTON>
+				<BUTTON class="dropbtn">Reports</BUTTON>
 					<DIV class="dropdown-content">
 						<%= link_to :Week, report_week_path(1) %>
 						<%# link_to :New, new_expenditure_path %>
