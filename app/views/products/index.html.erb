@@ -5,6 +5,7 @@
 			<TH>Name</TH>
 			<TH>Description</TH>
 			<TH>Price</TH>
+			<TH>Stock</TH>
 			<TH colspan="2"></TH>
 		</TR>
 		<% @products.each do |product| %>
@@ -12,6 +13,7 @@
 				<TD><%= product.name %></TD>
 				<TD><%= product.description %></TD>
 				<TD><%= product.price %></TD>
+				<TD><%= product.stock %></TD>
 				<TD><%= link_to 'Show', product_path(product) %></TD>
 				<TD><%= link_to 'Edit', edit_product_path(product) %></TD>
 			</TR>

@@ -1,2 +1,21 @@
-<h1>Recipes#new</h1>
-<p>Find me in app/views/recipes/new.html.erb</p>
+<H1>New Recipe</H1>
+<%= form_for @recipe do |f| %>
+  <P>
+  <%= f.select :product_id, options_for_select(Product.pluck(:name, :id)) %>
+  <%= f.text_field :name %>
+  </P>
+  <B><%= f.label :ingredients %></B>
+  <%= render "shared/dynamic_form_field_manager" %>
+  <%= f.fields_for :ingredients, @ingredients do |ings| %>
+    <DIV name=clonable>
+      <%= ings.select :stock_id, options_for_select(Stock.pluck(:name, :id)) %>
+      <%= ings.text_field :quantity, size: 4 %>
+      <%= ings.select :unit_id, options_for_select(Unit.pluck(:name, :id)) %>
+    </DIV>
+  <% end %>
+  <P>
+    <%= f.label :expected_count %>
+    <%= f.text_field :expected_quantity, size: 3 %>
+  </P>
+  <%= f.submit %>
+<% end %>

@@ -1,2 +1,16 @@
-<h1>Recipes#index</h1>
-<p>Find me in app/views/recipes/index.html.erb</p>
+<H1>List Recipes</H1>
+<TABLE>
+  <TR>
+    <TH>Name</TH>
+    <TH>Actions</TH>
+  </TR>
+  <% @recipes.each do |recipe| %>
+    <TR>
+      <TD><%= "#{recipe.product.name} #{recipe.name}" %></TD>
+      <TD>
+        <%= link_to :edit, edit_recipe_path(recipe) %> |
+        <%= link_to :prepare, prepare_recipe_path(recipe) %>
+      </TD>
+    </TR>
+  <% end %>
+</TABLE>

@@ -1,11 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'recipes/index'
-  get 'recipes/new'
-  get 'recipes/create'
-  get 'recipes/show'
-  get 'recipes/edit'
-  get 'recipes/update'
+  get 'stocks/index'
 #  scope '/bakery' do
   get 'welcome/index'
   get "/reports/week/:mon", to: "reports#week", as: "report_week"
@@ -17,6 +12,11 @@ Rails.application.routes.draw do
   resources :payments
   resources :feedstocks
   resources :expenditures
+  resources :stocks, only: [:index]
+  resources :recipes do
+    get "prepare", on: :member
+    post "prepare", on: :member, action: :save_prepare
+  end
 	
   root 'welcome#index'
 #  end

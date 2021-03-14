@@ -1,0 +1,25 @@
+<H1>Prepare Recipe</H1>
+<%= form_for @production, url: prepare_recipe_path(@recipe) do |f| %>
+  <P>
+    <H2><%= f.label "#{@recipe.product.name} #{@recipe.name}" %></H2>
+    <%= f.hidden_field :product_id, value: @recipe.product_id %>
+  </P>
+  <P>
+    <%= f.date_field :date %>
+  </P>
+  <B><%= f.label :ingredients %></B>
+  <%= f.fields_for :stocks, @ingredients do |ingredient| %>
+    <DIV name=clonable>
+      <%= ingredient.label ingredient.object.name %>
+      <%= ingredient.hidden_field :stock_id %>
+      <%= ingredient.text_field :quantity, size: 4 %>
+      <%= ingredient.label :unit, ingredient.object.unit.name %>
+      <%= ingredient.hidden_field :unit_id %>
+    </DIV>
+  <% end %>
+  <P>
+    <%= f.label :produced %>
+    <%= f.text_field :quantity, value: @recipe.expected_quantity, size: 3 %>
+  </P>
+  <%= f.submit "Prepare" %>
+<% end %>
