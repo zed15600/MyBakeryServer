@@ -6,7 +6,8 @@
       <TH>Vendor</TH>
       <TH>Value</TH>
       <TH colspan="2">
-        A<%= check_box_tag :show_all, :show_all, @show_all %>
+        Product<BR>
+        <%= select_tag :product, options_for_select(Product.pluck(:name, :id), @product), include_blank: "All" %>
       </TH>
     </TR>
     <% @payments.each do |payment| %>

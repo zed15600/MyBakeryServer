@@ -1,4 +1,4 @@
-$("input[type='checkbox']#show_all").on("click", function() {
-  window.location.href = `/payments/?show_all=${this.checked}`
+$("#product").on("change", function() {
+  param = this.value ? `?product_id=${this.value}` : ""
+  window.location.href = `/payments/${param}`
 });
-

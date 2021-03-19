@@ -3,12 +3,12 @@ class PaymentsController < ApplicationController
 
   def index
     @payments = Payment.includes(:vendor).order(date: :desc).all
-    @payments = @payments.where.not(hidden: true) if params[:show_all] && params[:show_all] == "false"
-    @show_all = true unless params[:show_all] == "false"
+    @payments = @payments.where(product_id: params[:product_id]) if params[:product_id]
+    @product = params[:product_id]
     respond_to do |format|
       format.json do
-	response = @payments.collect {|p| {id: p.id, vendor_id: p.vendor_id, date: p.date, value: p.value}}
-	render json: { results: response }
+        response = @payments.collect {|p| {id: p.id, vendor_id: p.vendor_id, date: p.date, value: p.value}}
+        render json: { results: response }
       end
       format.html
     end
