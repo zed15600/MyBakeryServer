@@ -29,9 +29,6 @@ class PaymentsController < ApplicationController
   def create
 		@payment = Payment.new(payment_params)
 		if @payment.save
-			#Deducing the payment from vendor's debt
-			@payment.vendor.debt -= @payment.value
-			@payment.vendor.save
 			respond_to do |format|
 				format.json {
 					render json: {id: @payment.id, vendor_id: @payment.vendor_id, date: @payment.date, value: @payment.value}
@@ -60,7 +57,7 @@ class PaymentsController < ApplicationController
     @payment.date = pars[:date]
     @payment.vendor_id = pars[:vendor_id]
     @payment.value = pars[:value]
-    @payment.hidden = pars[:hidden]
+    @payment.product_id = pars[:product_id]
     if @payment.valid?
       if @payment.vendor_id_changed?
 	payOld_vendor.debt += payOld_value
@@ -88,7 +85,7 @@ class PaymentsController < ApplicationController
   private
 
   def payment_params
-    params.require(:payment).permit(:date, :vendor_id, :value, :hidden)
+    params.require(:payment).permit(:date, :vendor_id, :value, :product_id)
   end
 
 end
