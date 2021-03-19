@@ -1,5 +1,5 @@
 <DIV class="form" id="payment_form">
-  <%= form_with model: @payment, local: true do |form| %>
+  <%= form_for @payment, local: true do |form| %>
     <% if @payment.errors.any? %>
       <DIV id="error_explanation">
 	<H2><%= pluralize(@payment.errors.count, "error") %> prohibited this payment from being saved:</H2>
@@ -23,8 +23,8 @@
       <%= form.number_field :value %>
     </P>
     <P>
-      <%= form.label :hidden %>
-      <%= form.check_box :hidden %>
+      <%= form.label :product %>
+      <%= form.select :product_id, options_for_select(Product.pluck(:name, :id), @payment.product_id) %>
     </P>
     <P>
       <%= form.submit %>

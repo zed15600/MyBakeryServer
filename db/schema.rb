@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_051943) do
+ActiveRecord::Schema.define(version: 2021_03_18_214159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,7 +51,8 @@ ActiveRecord::Schema.define(version: 2021_03_18_051943) do
     t.integer "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "hidden", default: false
+    t.bigint "product_id"
+    t.index ["product_id"], name: "index_payments_on_product_id"
     t.index ["vendor_id"], name: "index_payments_on_vendor_id"
   end
 
@@ -180,6 +181,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_051943) do
 
   add_foreign_key "expenditures_feedstocks", "expenditures"
   add_foreign_key "expenditures_feedstocks", "feedstocks"
+  add_foreign_key "payments", "products"
   add_foreign_key "payments", "vendors"
   add_foreign_key "production_stocks", "productions"
   add_foreign_key "production_stocks", "stocks"
