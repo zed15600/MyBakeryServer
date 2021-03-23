@@ -20,8 +20,6 @@ class Sale < ApplicationRecord
 
   scope :by_date, -> { order(date: :desc) }
 
-  after_commit :reduce_stock
-
   def next
     return if find_location < 1
     @ids[find_location - 1]
@@ -37,12 +35,5 @@ class Sale < ApplicationRecord
   def find_location
     @ids ||= Sale.by_date.ids
     @location ||= @ids.index(id)
-  end
-
-  def reduce_stock
-    sale_products.each do |sp|
-      sp.product.stock -= sp.quantity
-      sp.product.save
-    end
   end
 end
