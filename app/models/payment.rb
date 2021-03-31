@@ -1,7 +1,8 @@
 class Payment < ApplicationRecord
   belongs_to :vendor
+  belongs_to :product
 	
-	validates :date, :vendor_id, :value, presence: true
+  validates :date, :vendor_id, :value, presence: true
 
   before_create :reduce_vendor_debt_create
 

@@ -4,6 +4,7 @@
     <TR>
       <TH>Date</TH>
       <TH>Vendor</TH>
+      <TH>Product</TH>
       <TH>Value</TH>
       <TH colspan="2">
         Product<BR>
@@ -12,11 +13,12 @@
     </TR>
     <% @payments.each do |payment| %>
       <TR>
-	<TD><%= payment.date %></TD>
-	<TD><%= payment.vendor.name %></TD>
-	<TD><%= payment.value %></TD>
-	<TD><%= link_to 'Show', payment_path(payment) %></TD>
-	<TD><%= link_to 'Edit', edit_payment_path(payment) %></TD>
+        <TD><%= payment.date %></TD>
+        <TD><%= payment.vendor.name %></TD>
+        <TD><%= payment.product.name %></TD>
+        <TD><%= payment.value %></TD>
+        <TD><%= link_to 'Show', payment_path(payment) %></TD>
+        <TD><%= link_to 'Edit', edit_payment_path(payment) %></TD>
       </TR>
     <% end %>
   </TABLE>
