@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: expenditures
+#
+#  id          :bigint           not null, primary key
+#  date        :date
+#  total_value :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
 class TotalValidator < ActiveModel::Validator
 
 	def validate(record)

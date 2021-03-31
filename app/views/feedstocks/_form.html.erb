@@ -21,11 +21,15 @@
     <P>
       <%= form.label :unit %><BR>
       <%= form.text_field :unit_value %>
-      <%= form.select :unit_id, options_for_select(Unit.all.map{|u| [u.name, u.id]}, @feedstock.unit&.id), {include_blank: "-"} %>
+      <%= form.select :unit_id, options_for_select(Unit.all.pluck(:name, :id), @feedstock.unit_id), { include_blank: "-" } %>
     </P>
     <P>
       <%= form.label :provider_id %><BR>
-      <%= form.select :provider_id, options_for_select(Provider.all.map{|p| [p.name, p.id]}, @feedstock.provider&.id), {include_blank: "-"} %>
+      <%= form.select :provider_id, options_for_select(Provider.all.pluck(:name, :id), @feedstock.provider_id), { include_blank: "-" } %>
+    </P>
+    <P>
+      <%= form.label :stock_id %><BR>
+      <%= form.select :stock_id, options_for_select(Stock.all.pluck(:name, :id), @feedstock.stock_id), { include_blank: "-" } %>
     </P>
     <P>
       <%= form.submit %>
