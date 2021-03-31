@@ -1,4 +1,16 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# == Schema Information
+#
+# Table name: sale_products
+#
+#  id          :bigint           not null, primary key
+#  paid_amount :integer          default(0)
+#  quantity    :integer
+#  value       :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  product_id  :bigint
+#  sale_id     :bigint
+#
 
 one:
   sale: one
