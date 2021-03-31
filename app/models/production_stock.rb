@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: production_stocks
+#
+#  id            :bigint           not null, primary key
+#  quantity      :integer
+#  production_id :bigint
+#  stock_id      :bigint
+#  unit_id       :bigint
+#
 class ProductionStock < ApplicationRecord
   belongs_to :production
   belongs_to :stock

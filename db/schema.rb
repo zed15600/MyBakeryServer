@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_214159) do
+ActiveRecord::Schema.define(version: 2021_03_31_044547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,7 +41,9 @@ ActiveRecord::Schema.define(version: 2021_03_18_214159) do
     t.integer "unit_value"
     t.bigint "unit_id"
     t.bigint "provider_id"
+    t.bigint "stock_id"
     t.index ["provider_id"], name: "index_feedstocks_on_provider_id"
+    t.index ["stock_id"], name: "index_feedstocks_on_stock_id"
     t.index ["unit_id"], name: "index_feedstocks_on_unit_id"
   end
 
@@ -147,6 +149,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_214159) do
     t.bigint "unit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "relevant"
     t.index ["unit_id"], name: "index_stocks_on_unit_id"
   end
 
@@ -181,6 +184,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_214159) do
 
   add_foreign_key "expenditures_feedstocks", "expenditures"
   add_foreign_key "expenditures_feedstocks", "feedstocks"
+  add_foreign_key "feedstocks", "stocks"
   add_foreign_key "payments", "products"
   add_foreign_key "payments", "vendors"
   add_foreign_key "production_stocks", "productions"
